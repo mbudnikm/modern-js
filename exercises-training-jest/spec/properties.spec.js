@@ -1,4 +1,6 @@
 describe('Properties', () => {
+  const ssn = Symbol('SSN')
+
   const john = {
     name: "John",
     hi(){
@@ -10,21 +12,21 @@ describe('Properties', () => {
         yield Math.round(Math.random() * 1000)
       }
     },
-    [Symbol('SSN')]: "626-78-6874",
+    [ssn]: "626-78-6874",
     [Symbol.for('credit-card')]: "377393246768711",
   }
 
   describe('Standard Properties', () => {
     it('should be indexable', () => {
       const props = Object.getOwnPropertyNames(john);
-      expect(props).toEqual( /* YOUR ANSWER HERE */ );
+      expect(props).toEqual(['name', 'hi', 'age', 'numbers'])
     });
   });
 
   describe('Symbols', () => {
     it('should be indexable', () => {
       const symbols = Object.getOwnPropertySymbols(john);
-      expect(symbols).toEqual( /* YOUR ANSWER HERE */ );
+      expect(symbols).toEqual([ssn, Symbol.for('credit-card')]);
     });
   });
 
@@ -32,11 +34,19 @@ describe('Properties', () => {
     it('should be indexable', () => {
       const descriptors = Object.getOwnPropertyDescriptors(john);
 
-      expect(Array.isArray(descriptors)).toEqual( /* YOUR ANSWER HERE */ );
-      expect(Object.keys(descriptors)).toEqual( /* YOUR ANSWER HERE */ );
+      expect(Array.isArray(descriptors)).toEqual(false);
+      expect(Object.keys(descriptors)).toEqual(['name', 'hi', 'age', 'numbers']);
       
       // find a way to access both standard properties and symbols of a given object:
       // define `keysWithSymbols` here
+      const getkeysWithSymbols = (obj) => {
+        return [
+          ...Object.getOwnPropertyNames(obj),
+          ...Object.getOwnPropertySymbols(obj)
+        ]
+      }
+
+      const keysWithSymbols = getkeysWithSymbols(john)
 
       expect(keysWithSymbols.length).toEqual(6);
       expect(keysWithSymbols.includes(Symbol.for('credit-card'))).toEqual(true);
