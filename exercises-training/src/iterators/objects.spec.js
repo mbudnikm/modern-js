@@ -20,6 +20,16 @@ describe('Object Iterators', () => {
 		// returning a value for each key (one step - one value yielded)
 
 		// define iterateObject generator here
+		function* iterateObject(obj, own = true) {
+			/*for (var value of Object.values(obj)) {
+				yield value
+			}*/ // źle bo alokujumy pamięć
+			for (var key in obj) {
+				if (own && obj.hasOwnProperty(key)) {
+					yield obj[key]
+				}
+			}
+		}
 
 		let numberIterator = iterateObject(sourceObject1);
 		expect([...numberIterator]).toEqual([9376502, 8364584, 9803441, 2641924]);
