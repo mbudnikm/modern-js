@@ -12,13 +12,13 @@ describe('generators', () => {
 
 		const hamlet = reciteHamletPrinceOfDenmark()
 
-		expect(hamlet.next().value).toBe(/* YOUR ANSWER */)
-		expect(hamlet.next().value).toBe(/* YOUR ANSWER */)
-		expect(hamlet.next().value).toBe(/* YOUR ANSWER */)
-		expect(hamlet.next().value).toBe(/* YOUR ANSWER */)
-		expect(hamlet.next().value).toBe(/* YOUR ANSWER */)
-		expect(hamlet.next().value).toBe(/* YOUR ANSWER */)
-		expect(hamlet.next().value).toBe(/* YOUR ANSWER */)
+		expect(hamlet.next().value).toBe("to")
+		expect(hamlet.next().value).toBe("be")
+		expect(hamlet.next().value).toBe("or")
+		expect(hamlet.next().value).toBe("not")
+		expect(hamlet.next().value).toBe("to")
+		expect(hamlet.next().value).toBe("be")
+		expect(hamlet.next().value).toBe(undefined)
 	})
 
 	it('should yield objects with value and done properties', () => {
@@ -32,12 +32,12 @@ describe('generators', () => {
 
 		const odds = oddNumbers()
 
-		expect(odds.next().value).toBe(/* YOUR ANSWER */)
-		expect(odds.next().value).toBe(/* YOUR ANSWER */)
-		expect(odds.next().done).toBe(/* YOUR ANSWER */)
+		expect(odds.next().value).toBe(1)
+		expect(odds.next().value).toBe(3)
+		expect(odds.next().done).toBe(false)
 		odds.next()
-		expect(odds.next().value).toBe(/* YOUR ANSWER */)
-		expect(odds.next().done).toBe(/* YOUR ANSWER */)
+		expect(odds.next().value).toBe(9)
+		expect(odds.next().done).toBe(true)
 	})
 
 	it('can be iterated over', () => {
@@ -53,10 +53,10 @@ describe('generators', () => {
 			sum = sum + even
 		}
 
-		expect(sum).toBe(/* YOUR ANSWER */)
+		expect(sum).toBe(20)
 	})
 
-	it('can accept values from outside', () => {
+	fit('can accept values from outside', () => {
 		function* fibonacci(){
 			var fn1 = 0;
 			var fn2 = 1;
@@ -74,19 +74,19 @@ describe('generators', () => {
 
 		var fib = fibonacci()
 
-		expect(fib.next().value).toBe(/* YOUR ANSWER */)
-		expect(fib.next().value).toBe(/* YOUR ANSWER */)
-		expect(fib.next().value).toBe(/* YOUR ANSWER */)
-		expect(fib.next().done).toBe(/* YOUR ANSWER */)
+		expect(fib.next().value).toBe(0)
+		expect(fib.next().value).toBe(1)
+		expect(fib.next().value).toBe(1)
+		expect(fib.next().done).toBe(false)
 		fib.next()
-		expect(fib.next().value).toBe(/* YOUR ANSWER */)
-		expect(fib.next().value).toBe(/* YOUR ANSWER */)
-		expect(fib.next(true).done).toBe(/* YOUR ANSWER */)
-		expect(fib.next().value).toBe(/* YOUR ANSWER */)
+		expect(fib.next().value).toBe(5)
+		expect(fib.next().value).toBe(8)
+		expect(fib.next(true).done).toBe(false)
+		expect(fib.next().value).toBe(1)
 		fib.next()
-		expect(fib.next(false).value).toBe(/* YOUR ANSWER */)
-		expect(fib.next(undefined).value).toBe(/* YOUR ANSWER */)
-		expect(fib.next("training hell yeah!").value).toBe(/* YOUR ANSWER */)
-		expect(fib.next().done).toBe(/* YOUR ANSWER */)
+		expect(fib.next(false).value).toBe(2)
+		expect(fib.next(undefined).value).toBe(3)
+		expect(fib.next("training hell yeah!").value).toBe(0)
+		expect(fib.next().done).toBe(false)
 	})
 })
