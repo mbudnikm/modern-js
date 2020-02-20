@@ -56,7 +56,7 @@ describe('generators', () => {
 		expect(sum).toBe(20)
 	})
 
-	fit('can accept values from outside', () => {
+	it('can accept values from outside', () => {
 		function* fibonacci(){
 			var fn1 = 0;
 			var fn2 = 1;
@@ -64,7 +64,8 @@ describe('generators', () => {
 				var current = fn1;
 				fn1 = fn2;
 				fn2 = current + fn1;
-				var reset = yield current;
+				var reset = yield current; // pierwsze yield, potem przypisanie do reseta
+
 				if (reset){
 						fn1 = 0;
 						fn2 = 1;
@@ -77,11 +78,11 @@ describe('generators', () => {
 		expect(fib.next().value).toBe(0)
 		expect(fib.next().value).toBe(1)
 		expect(fib.next().value).toBe(1)
-		expect(fib.next().done).toBe(false)
-		fib.next()
+		expect(fib.next().done).toBe(false) // 2
+		fib.next() // 3
 		expect(fib.next().value).toBe(5)
 		expect(fib.next().value).toBe(8)
-		expect(fib.next(true).done).toBe(false)
+		expect(fib.next(true).done).toBe(false) // reset -> 0
 		expect(fib.next().value).toBe(1)
 		fib.next()
 		expect(fib.next(false).value).toBe(2)
