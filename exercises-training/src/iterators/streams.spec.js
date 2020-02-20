@@ -1,4 +1,4 @@
-describe('Stream Iterators', () => {
+fdescribe('Stream Iterators', () => {
 
 	// let's assume the following data represents some stream data
 	const dataStream = [
@@ -20,6 +20,13 @@ describe('Stream Iterators', () => {
 		//	 will emit abc, def, ghi, jkl, m, n, o, p
 
 		// define iterateStream generator here
+		function* iterateStream(data) {
+			for (var chunk of data) {
+				for (var item of chunk.split(":")) {
+					yield item
+				}
+			}
+		}
 
 		let iterator = iterateStream(dataStream);
 		expect([...iterator]).toEqual(["0r", "8cSumDFY", "LOP", "Y5p", "TFKq", "Bio5", "uSe", "8q", "37zgyjBd", "Ljz", "88", "Mo9n", "AEYz5Zn", "ujF2rNc", "K", "MOE", "OawCm", "NEhVFH", "JLiG9", "pe5", "Hy4n", "rUqJC", "hCfT6upV", "O", "7f2gk4", "Zoe", "usr", "e0Cmj", "EP"]);
@@ -39,6 +46,24 @@ describe('Stream Iterators', () => {
 		//	 will emit abcdefghi, jklmn, op
 
 		// define iterateStreamAndBuffer generator here
+		function* iterateStreamAndBuffer(data) {
+			var result = ""
+			var counter = 0
+			for (var chunk of data) {
+				for (var item of chunk.split(":")) {
+					counter += 1
+					result = result + item
+
+					if(counter === 3){
+						yield result
+						result = ""
+						counter = 0
+					}
+				}
+			}
+			if(result !== "")
+			yield result
+		}
 
 		let iterator = iterateStreamAndBuffer(dataStream);
 		expect([...iterator]).toEqual(["0r8cSumDFYLOP", "Y5pTFKqBio5", "uSe8q37zgyjBd", "Ljz88Mo9n", "AEYz5ZnujF2rNcK", "MOEOawCmNEhVFH", "JLiG9pe5Hy4n", "rUqJChCfT6upVO", "7f2gk4Zoeusr", "e0CmjEP"]);
