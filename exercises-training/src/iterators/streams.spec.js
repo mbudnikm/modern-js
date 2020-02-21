@@ -1,4 +1,4 @@
-fdescribe('Stream Iterators', () => {
+describe('Stream Iterators', () => {
 
 	// let's assume the following data represents some stream data
 	const dataStream = [

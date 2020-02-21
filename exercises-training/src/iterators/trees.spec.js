@@ -1,4 +1,4 @@
-describe('Tree Iterators', () => {
+fdescribe('Tree Iterators', () => {
 
 	const tree = {
 		value: 'A',
@@ -38,6 +38,13 @@ describe('Tree Iterators', () => {
 
 			// define traverseDepth function here
 
+			const traverseDepth = (node, fn) => {
+				fn(node.value)
+				if(node.children) {
+					node.children.forEach(child => traverseDepth(child, fn))
+				}
+			}
+
 			let tmp1 = '';
 			const op1 = (item) => tmp1 += item;
 			traverseDepth(tree, op1);
@@ -55,6 +62,25 @@ describe('Tree Iterators', () => {
 
 			// define traverseBreadth function here
 
+			const traversBreadth = (node, fn) => {
+				const queue = [node] // feed with root
+				while(queue.length > 0) {
+					const item = queue.shift()
+					fn(item.value)
+					if(item.children){
+						queue.push(...item.children)
+					}
+				}
+
+				/* 
+					fn(queue[0].value)
+					if(queue[0].children){
+						queue.push(...queue[0].children)
+					} 
+					queue.shift()
+				*/
+			}
+
 			let tmp1 = '';
 			const op1 = (item) => tmp1 += item;
 			traverseBreadth(tree, op1);
@@ -68,16 +94,37 @@ describe('Tree Iterators', () => {
 
 	});
 
-	describe('with generators', () => {
+	fdescribe('with generators', () => {
 
-		it('performs depth-first traversal', () => {
+		fit('performs depth-first traversal', () => {
 			// now, instead of a function, implement a generator that will iterate over
 			// the tree structure, in depth-first order
 
 			// implement iterateDepthFirst generator here
+			function* iterateDepthFirst(node) {
+				yield node.value
+				if(node.children) {
+					for (var child of node.children) {
+						yield* iterateDepthFirst(child)
+					}
+				}
+			}
 
 			let iterator = iterateDepthFirst(tree);
 			expect([...iterator]).toEqual(['A', 'B', 'E', 'F', 'G', 'C', 'M', 'R', 'N', 'S', 'D']);
+
+			/* var myTree = {
+				...tree, 
+				[Symbol.iterator]: function() {	// fabryka iteratorów - wtedy jedna domyślna metoda iterowania
+					return iterateDepthFirst(this)
+				},
+				depthFirstIterator: function() {	// fabryka iteratorów
+					return iterateDepthFirst(this)
+				}
+			}
+
+			expect([...myTree]).toEqual(['A', 'B', 'E', 'F', 'G', 'C', 'M', 'R', 'N', 'S', 'D'])
+			expect([...myTree.depthFirstIterator()]).toEqual(['A', 'B', 'E', 'F', 'G', 'C', 'M', 'R', 'N', 'S', 'D']); */
 
 			iterator = iterateDepthFirst(tree);
 			expect(iterator.next().value).toEqual('A');
