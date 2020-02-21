@@ -1,6 +1,6 @@
 import API from '../../data/api';
 
-describe('async functions', () => {
+fdescribe('async functions', () => {
 
 	// consider examples from promises/api.spec.js file
 	// (!) fetch appropriate employees by their IDs: 8569129, 254808831, 58197, 651065
@@ -12,8 +12,14 @@ describe('async functions', () => {
 			// request another one) and return list of these 4 employees to make `expect` calls pass
 			// find appropriate employees in src/data.js file
 
+			// 8569129, 254808831, 58197, 651065
 			async function fetchEmployees(){
 				// async function body
+				const e1 = await API.getEmployee(8569129)
+				const e2 = await API.getEmployee(254808831)
+				const e3 = await API.getEmployee(58197)
+				const e4 = await API.getEmployee(651065)
+				return [e1, e2, e3, e4]
 			}
 
 			fetchEmployees()
@@ -28,8 +34,19 @@ describe('async functions', () => {
 
 		it('should perform asynchronous calls sequentially using for..of loop', (done) => {
 			async function fetchEmployees(...ids){
-				// async function body
+				let result = []
+				for (var id of ids) {
+					// result.push(await API.getEmployee(id))
+					const data = await API.getEmployee(id)
+					result.push(data)
+				}
+				return result
 			}
+
+			const id1 = 8569129
+			const id2 = 254808831
+			const id3 = 58197
+			const id4 = 651065
 
 			fetchEmployees(id1, id2, id3, id4 /* put IDs here */)
 				.then(([e1, e2, e3, e4]) => {
@@ -47,7 +64,33 @@ describe('async functions', () => {
 			// the data expectations are the same as in previous exercise
 
 			async function fetchEmployees(){
-				// async function body
+				const ids = [8569129, 254808831, 58197, 651065]
+				//const promises = ids.map(id => API.getEmployee(id))
+				const promises = ids.map(API.getEmployee)
+				return Promise.all(promises)
+
+				// solution (2)
+				/*const p1 = await API.getEmployee(8569129)
+				const p2 = await API.getEmployee(254808831)
+				const p3 = await API.getEmployee(58197)
+				const p4 = await API.getEmployee(651065)
+				return Promise.all[e1, e2, e3, e4] */
+
+				// solution (3)
+				/*const p1 = await API.getEmployee(8569129)
+				const p2 = await API.getEmployee(254808831)
+				const p3 = await API.getEmployee(58197)
+				const p4 = await API.getEmployee(651065)
+				return [await e1, await e2, await e3, await e4] */
+
+				// solution (4) - parallel requests + parallel awaiting
+				/*const res = []
+				const promises = ids.map(async (id, idx) => {
+					const e = await API.getEmployee(id)
+					res[idx] = e
+				}) 
+				await Promise.all(promises)
+				return res*/
 			}
 
 			fetchEmployees()
@@ -67,8 +110,14 @@ describe('async functions', () => {
 		it('total salaries for certain nationalities', (done) => {
 			// write an async function which will calculate and return total salaries of employees filtered by nationality
 
+			const getTotalSalary = (employees) => {
+				return employees.reduce((sum, employee) => sum + employee.salary, 0)
+			}
+
 			async function getTotalNationalSalary(nationality){
 				// async function body
+				const employees = await API.getEmployeesByNationality(nationality)
+				return getTotalSalary(employees)
 			}
 
 			Promise.all([
