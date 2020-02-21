@@ -6,15 +6,15 @@ EXERCISE:
 describe('Falsy Values', () => {
   it('weak comparisons', () => {
 
-    expect(null === undefined).toBe(/* YOUR ANSWER HERE */)
-    expect(null === 0).toBe(/* YOUR ANSWER HERE */)
-    expect(null === false).toBe(/* YOUR ANSWER HERE */)
-    expect(null === '').toBe(/* YOUR ANSWER HERE */)
+    expect(null === undefined).toBe(false)
+    expect(null === 0).toBe(false)
+    expect(null === false).toBe(false)
+    expect(null === '').toBe(false)
 
-    expect(null == undefined).toBe(/* YOUR ANSWER HERE */)
-    expect(null == 0).toBe(/* YOUR ANSWER HERE */)
-    expect(null == false).toBe(/* YOUR ANSWER HERE */)
-    expect(null == '').toBe(/* YOUR ANSWER HERE */)
+    expect(null == undefined).toBe(true)
+    expect(null == 0).toBe(false)
+    expect(null == false).toBe(false)
+    expect(null == '').toBe(false)
   })
 
   // ?.
@@ -39,11 +39,11 @@ describe('Falsy Values', () => {
 
     // optional static property access
 
-    const instrumentPrice = john.instrument.price
+    const instrumentPrice = john?.instrument?.price
     expect( instrumentPrice ).toBeUndefined()
 
     // this one exists, but turn it into optional chaining anyway
-    const bandName = john.band.name
+    const bandName = john?.band?.name
     expect( bandName ).toBe("The Beatles")
 
     // nested
@@ -51,6 +51,8 @@ describe('Falsy Values', () => {
     expect( JohnBandActiveFrom ).toBe(1960)
 
     // root reference is not defined
+    let ricky = {}
+
     const RickyMartinBandActiveFrom = ricky?.band?.active?.from
     expect( RickyMartinBandActiveFrom ).toBeUndefined()
 
@@ -66,14 +68,14 @@ describe('Falsy Values', () => {
     expect(johnLastName).toEqual("Lennon")
 
     prop = 'address'
-    const johnHomeCity = john[prop].city
+    const johnHomeCity = john[prop]?.city
     expect(johnHomeCity).toBeUndefined()
 
 
 
     // optional function or method call
 
-    const greeting = john.sayHello()
+    const greeting = john.sayHello?.()
     expect( greeting ).toBeUndefined()
 
     // this one exists, but turn it into optional chaining anyway
@@ -83,6 +85,9 @@ describe('Falsy Values', () => {
 
   // nullish coalescing provides a default value for one of the following:
   // (no value), undefined, null
+  // X ?? Y
+  // potenciallyEmpty ?? Y <- if empty give me Y
+  // potenciallyEmpty is null or undefined or no value
   it('works with nullish coalescing', () => {
     const office = {
       address: {
@@ -94,19 +99,19 @@ describe('Falsy Values', () => {
     };
     
     const undefinedValue = office.address.undefinedThing ?? 'default'
-    expect(undefinedValue).toEqual(/* YOUR ANSWER HERE */)
+    expect(undefinedValue).toEqual('default')
 
     const owner = office.address.owner ?? 'Mike'
-    expect(owner).toEqual(/* YOUR ANSWER HERE */)
+    expect(owner).toEqual('Mike')
     
     const flatNumber = office.address.flatNumber ?? '45'
-    expect(flatNumber).toEqual(/* YOUR ANSWER HERE */)
+    expect(flatNumber).toEqual('')
     
     const floor = office.address.floor ?? 3
-    expect(floor).toEqual(/* YOUR ANSWER HERE */)
+    expect(floor).toEqual(0)
     
     const forSale = office.address.forSale ?? true
-    expect(forSale).toEqual(/* YOUR ANSWER HERE */)
+    expect(forSale).toEqual(false)
   })
 })
 
